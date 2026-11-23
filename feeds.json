@@ -1,0 +1,50 @@
+{
+  "settings": {
+    "keep_days": 30,
+    "max_items_per_feed": 15,
+    "max_total": 1500
+  },
+  "feeds": [
+    { "name": "BBC News – World",        "category": "World",   "url": "https://feeds.bbci.co.uk/news/world/rss.xml", "weight": 3 },
+    { "name": "The Guardian – World",    "category": "World",   "url": "https://www.theguardian.com/world/rss", "weight": 3 },
+    { "name": "Al Jazeera",              "category": "World",   "url": "https://www.aljazeera.com/xml/rss/all.xml", "weight": 2 },
+    { "name": "NPR – World",             "category": "World",   "url": "https://feeds.npr.org/1004/rss.xml", "weight": 2 },
+    { "name": "DW",                      "category": "World",   "url": "https://rss.dw.com/rdf/rss-en-all", "weight": 2 },
+    { "name": "The Diplomat",            "category": "World",   "url": "https://thediplomat.com/feed/", "weight": 2 },
+
+    { "name": "The Hindu – Opinion",     "category": "India",   "url": "https://www.thehindu.com/opinion/lead/feeder/default.rss", "weight": 3 },
+    { "name": "Indian Express – Explained", "category": "India", "url": "https://indianexpress.com/section/explained/feed/", "weight": 3 },
+    { "name": "The Print",               "category": "India",   "url": "https://theprint.in/feed/", "weight": 2 },
+    { "name": "Scroll.in",               "category": "India",   "url": "https://feeds.feedburner.com/ScrollinArticles.rss", "weight": 2 },
+    { "name": "The Wire",                "category": "India",   "url": "https://thewire.in/feed", "weight": 2 },
+    { "name": "Mint – Opinion",          "category": "India",   "url": "https://www.livemint.com/rss/opinion", "weight": 2 },
+
+    { "name": "Quanta Magazine",         "category": "Science", "url": "https://www.quantamagazine.org/feed/", "weight": 3 },
+    { "name": "Nature",                  "category": "Science", "url": "https://www.nature.com/nature.rss", "weight": 3 },
+    { "name": "Ars Technica – Science",  "category": "Science", "url": "https://feeds.arstechnica.com/arstechnica/science", "weight": 3 },
+    { "name": "Scientific American",     "category": "Science", "url": "https://rss.sciam.com/ScientificAmerican-Global", "weight": 2 },
+    { "name": "Knowable Magazine",       "category": "Science", "url": "https://knowablemagazine.org/rss", "weight": 3 },
+    { "name": "Smithsonian Magazine",    "category": "Science", "url": "https://www.smithsonianmag.com/rss/latest_articles/", "weight": 2 },
+
+    { "name": "Ars Technica",            "category": "Tech",    "url": "https://feeds.arstechnica.com/arstechnica/index", "weight": 3 },
+    { "name": "MIT Technology Review",   "category": "Tech",    "url": "https://www.technologyreview.com/feed/", "weight": 3 },
+    { "name": "IEEE Spectrum",           "category": "Tech",    "url": "https://spectrum.ieee.org/feeds/feed.rss", "weight": 2 },
+    { "name": "Wired",                   "category": "Tech",    "url": "https://www.wired.com/feed/rss", "weight": 2 },
+
+    { "name": "Aeon",                    "category": "Ideas & Long reads", "url": "https://aeon.co/feed.rss", "weight": 3 },
+    { "name": "Psyche",                  "category": "Ideas & Long reads", "url": "https://psyche.co/feed", "weight": 3 },
+    { "name": "The Conversation",        "category": "Ideas & Long reads", "url": "https://theconversation.com/global/articles.atom", "weight": 3 },
+    { "name": "Longreads",               "category": "Ideas & Long reads", "url": "https://longreads.com/feed/", "weight": 3 },
+    { "name": "The Atlantic",            "category": "Ideas & Long reads", "url": "https://www.theatlantic.com/feed/all/", "weight": 3 },
+    { "name": "The New Yorker",          "category": "Ideas & Long reads", "url": "https://www.newyorker.com/feed/everything", "weight": 3 },
+    { "name": "Guardian Long Read",      "category": "Ideas & Long reads", "url": "https://www.theguardian.com/news/series/the-long-read/rss", "weight": 3 },
+
+    { "name": "The Economist – Leaders", "category": "Business", "url": "https://www.economist.com/leaders/rss.xml", "weight": 3 },
+    { "name": "Harvard Business Review", "category": "Business", "url": "https://hbr.org/feed", "weight": 2 },
+
+    { "name": "Carbon Brief",            "category": "Climate", "url": "https://www.carbonbrief.org/feed/", "weight": 3 },
+    { "name": "Yale Environment 360",    "category": "Climate", "url": "https://e360.yale.edu/feed.xml", "weight": 3 },
+    { "name": "Mongabay India",          "category": "Climate", "url": "https://india.mongabay.com/feed/", "weight": 2 },
+    { "name": "Inside Climate News",     "category": "Climate", "url": "https://insideclimatenews.org/feed/", "weight": 2 }
+  ]
+}

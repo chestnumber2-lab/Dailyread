@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Daily Read</title>
+<meta name="theme-color" content="#faf8f4">
+<style>
+  :root {
+    --bg: #faf8f4; --card: #ffffff; --ink: #1d1b18; --muted: #6f6a62; --line: #e7e2d9;
+    --accent: #b4442b; --accent-soft: #f6e6e1; --chip: #efeae1; --shadow: 0 1px 2px rgba(30,25,15,.05), 0 4px 14px rgba(30,25,15,.04);
+  }
+  :root[data-theme="dark"] {
+    --bg: #14130f; --card: #1d1b16; --ink: #ece8df; --muted: #9b958a; --line: #2e2b24;
+    --accent: #e8825f; --accent-soft: #35231c; --chip: #27241d; --shadow: none;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 Georgia, "Iowan Old Style", "Times New Roman", serif; }
+  button, input, select { font: inherit; color: inherit; }
+  a { color: inherit; }
+  .ui { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+  header { border-bottom: 1px solid var(--line); }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 0 18px; }
+  .top { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding-top: 22px; padding-bottom: 14px; }
+  h1 { margin: 0; font-size: 2rem; letter-spacing: -.02em; line-height: 1.1; }
+  h1 span { color: var(--accent); }
+  .sub { margin: 4px 0 0; font-size: .85rem; color: var(--muted); }
+  .iconbtn { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 7px 13px; cursor: pointer; font-size: .85rem; }
+  .iconbtn:hover { border-color: var(--accent); }
+
+  .toolbar { background: var(--bg); border-bottom: 1px solid var(--line); padding: 10px 0; }
+  @media (min-width: 720px) { .toolbar { position: sticky; top: 0; z-index: 5; } }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .row + .row { margin-top: 8px; }
+  input[type=search], select { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 8px 11px; font-size: .9rem; }
+  input[type=search] { flex: 1 1 220px; min-width: 0; }
+  .chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: none; border: 1px solid transparent; background: var(--chip); border-radius: 999px; padding: 5px 13px; font-size: .85rem; cursor: pointer; white-space: nowrap; }
+  .chip[aria-pressed="true"] { background: var(--accent); color: #fff; }
+  label.tog { display: inline-flex; gap: 6px; align-items: center; font-size: .85rem; color: var(--muted); cursor: pointer; }
+
+  main { padding-top: 18px; padding-bottom: 40px; }
+  .count { font-size: .82rem; color: var(--muted); margin: 0 0 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; }
+  article.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow); }
+  article.card.read { opacity: .55; }
+  .thumb { aspect-ratio: 16/9; width: 100%; object-fit: cover; background: var(--chip); display: block; }
+  .body { padding: 13px 15px 12px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
+  .meta { font-size: .74rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .meta b { color: var(--accent); font-weight: 600; }
+  .card h2 { margin: 0; font-size: 1.12rem; line-height: 1.28; letter-spacing: -.005em; }
+  .card h2 a { text-decoration: none; }
+  .card h2 a:hover { text-decoration: underline; }
+  .card p { margin: 0; font-size: .92rem; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+  .foot { margin-top: auto; padding-top: 6px; display: flex; gap: 14px; font-size: .8rem; }
+  .foot button { border: 0; background: none; padding: 2px 0; cursor: pointer; color: var(--muted); }
+  .foot button:hover, .foot button.on { color: var(--accent); }
+  .empty { text-align: center; color: var(--muted); padding: 60px 10px; }
+  .more { display: block; margin: 22px auto 0; padding: 10px 26px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); cursor: pointer; }
+  .more:hover { border-color: var(--accent); }
+
+  details.sources { margin-top: 34px; font-size: .85rem; color: var(--muted); }
+  details.sources summary { cursor: pointer; }
+  details.sources ul { columns: 2 260px; padding-left: 18px; }
+  .bad { color: var(--accent); }
+
+  @media (max-width: 520px) {
+    h1 { font-size: 1.6rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap top">
+    <div>
+      <h1>The Daily <span>Read</span></h1>
+      <p class="sub ui" id="updated">Loading…</p>
+    </div>
+    <button class="iconbtn ui" id="theme" aria-label="Toggle dark mode">Theme</button>
+  </div>
+</header>
+
+<div class="toolbar ui">
+  <div class="wrap">
+    <div class="row">
+      <input type="search" id="q" placeholder="Search titles, summaries, authors…" aria-label="Search">
+      <select id="sort" aria-label="Sort">
+        <option value="top">Top picks</option>
+        <option value="new">Newest first</option>
+      </select>
+      <select id="range" aria-label="Time range">
+        <option value="1">Last 24 hours</option>
+        <option value="3" selected>Last 3 days</option>
+        <option value="7">Last 7 days</option>
+        <option value="30">Last 30 days</option>
+      </select>
+      <select id="source" aria-label="Source"><option value="">All sources</option></select>
+      <label class="tog"><input type="checkbox" id="hideRead"> Hide read</label>
+    </div>
+    <div class="row"><div class="chips" id="chips"></div></div>
+  </div>
+</div>
+
+<main class="wrap">
+  <p class="count ui" id="count"></p>
+  <div class="grid" id="grid"></div>
+  <button class="more ui" id="more" hidden>Load more</button>
+  <details class="sources ui" id="sources"><summary>Sources</summary><ul id="srclist"></ul></details>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var PAGE = 36;
+  var state = { data: null, cat: "All", shown: PAGE };
+
+  // localStorage can be unavailable or empty; never let it break the page.
+  function load(key, fallback) { try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch (e) { return fallback; } }
+  function save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
+  var saved = new Set(load("dr_saved", []));
+  var read = new Set(load("dr_read", []));
+
+  var $ = function (id) { return document.getElementById(id); };
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
+
+  // Only ever link to http(s) – feed data is untrusted.
+  function safeUrl(u) { try { var p = new URL(u); return (p.protocol === "http:" || p.protocol === "https:") ? p.href : null; } catch (e) { return null; } }
+
+  function ago(iso) {
+    var s = (Date.now() - new Date(iso).getTime()) / 1000;
+    if (s < 3600) return Math.max(1, Math.round(s / 60)) + " min ago";
+    if (s < 86400) return Math.round(s / 3600) + " h ago";
+    var d = Math.round(s / 86400);
+    return d + (d === 1 ? " day ago" : " days ago");
+  }
+
+  // Theme
+  var theme = load("dr_theme", window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  function applyTheme() { document.documentElement.setAttribute("data-theme", theme); }
+  applyTheme();
+  $("theme").onclick = function () { theme = theme === "dark" ? "light" : "dark"; save("dr_theme", theme); applyTheme(); };
+
+  function filtered() {
+    var q = $("q").value.trim().toLowerCase();
+    var days = +$("range").value, src = $("source").value, hide = $("hideRead").checked;
+    var cutoff = Date.now() - days * 864e5;
+    var list = state.data.articles.filter(function (a) {
+      if (state.cat === "Saved") { if (!saved.has(a.id)) return false; }
+      else {
+        if (state.cat !== "All" && a.category !== state.cat) return false;
+        if (new Date(a.published).getTime() < cutoff) return false;
+      }
+      if (src && a.source !== src) return false;
+      if (hide && read.has(a.id)) return false;
+      if (q && (a.title + " " + a.summary + " " + (a.author || "") + " " + a.source).toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+    list.sort($("sort").value === "top"
+      ? function (a, b) { return b.score - a.score; }
+      : function (a, b) { return a.published < b.published ? 1 : -1; });
+    return list;
+  }
+
+  function card(a) {
+    var c = el("article", "card" + (read.has(a.id) ? " read" : ""));
+    var href = safeUrl(a.url), img = a.image && safeUrl(a.image);
+    if (img) {
+      var im = el("img", "thumb"); im.src = img; im.alt = ""; im.loading = "lazy"; im.referrerPolicy = "no-referrer";
+      im.onerror = function () { im.remove(); };
+      c.appendChild(im);
+    }
+    var b = el("div", "body");
+    var meta = el("div", "meta ui");
+    var s = el("b", null, a.source); meta.appendChild(s);
+    meta.appendChild(document.createTextNode(" · " + ago(a.published) + (a.minutes ? " · " + a.minutes + " min read" : "")));
+    b.appendChild(meta);
+    var h = el("h2"); var link = el("a", null, a.title);
+    if (href) { link.href = href; link.target = "_blank"; link.rel = "noopener noreferrer"; link.onclick = function () { markRead(a.id, c); }; }
+    h.appendChild(link); b.appendChild(h);
+    if (a.summary) b.appendChild(el("p", null, a.summary));
+    var f = el("div", "foot ui");
+    var sb = el("button", saved.has(a.id) ? "on" : "", saved.has(a.id) ? "★ Saved" : "☆ Save");
+    sb.onclick = function () {
+      if (saved.has(a.id)) saved.delete(a.id); else saved.add(a.id);
+      save("dr_saved", Array.from(saved));
+      if (state.cat === "Saved") render(); else { sb.className = saved.has(a.id) ? "on" : ""; sb.textContent = saved.has(a.id) ? "★ Saved" : "☆ Save"; }
+    };
+    var rb = el("button", null, read.has(a.id) ? "Mark unread" : "Mark read");
+    rb.onclick = function () {
+      if (read.has(a.id)) read.delete(a.id); else read.add(a.id);
+      save("dr_read", Array.from(read)); render();
+    };
+    f.appendChild(sb); f.appendChild(rb); b.appendChild(f);
+    c.appendChild(b);
+    return c;
+  }
+
+  function markRead(id, node) {
+    if (read.has(id)) return;
+    read.add(id); save("dr_read", Array.from(read)); node.classList.add("read");
+  }
+
+  function render() {
+    var list = filtered(), grid = $("grid");
+    grid.textContent = "";
+    $("count").textContent = list.length + (list.length === 1 ? " article" : " articles");
+    if (!list.length) {
+      grid.appendChild(el("div", "empty ui", state.cat === "Saved" ? "Nothing saved yet — tap ☆ Save on any article." : "No articles match these filters."));
+    }
+    list.slice(0, state.shown).forEach(function (a) { grid.appendChild(card(a)); });
+    $("more").hidden = list.length <= state.shown;
+  }
+
+  function reset() { state.shown = PAGE; render(); }
+
+  function init(data) {
+    state.data = data;
+    var d = new Date(data.updated);
+    $("updated").textContent = "Updated " + ago(data.updated) + " · " + d.toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
+
+    var cats = ["All"].concat(Array.from(new Set(data.articles.map(function (a) { return a.category; }))).sort(), ["Saved"]);
+    cats.forEach(function (c) {
+      var b = el("button", "chip", c); b.setAttribute("aria-pressed", c === state.cat);
+      b.onclick = function () {
+        state.cat = c;
+        Array.prototype.forEach.call($("chips").children, function (x) { x.setAttribute("aria-pressed", x === b); });
+        reset();
+      };
+      $("chips").appendChild(b);
+    });
+
+    Array.from(new Set(data.articles.map(function (a) { return a.source; }))).sort().forEach(function (s) {
+      var o = el("option", null, s); o.value = s; $("source").appendChild(o);
+    });
+
+    var ok = data.feeds.filter(function (f) { return f.ok; }).length;
+    $("sources").firstChild.textContent = "Sources (" + ok + " of " + data.feeds.length + " reachable)";
+    data.feeds.forEach(function (f) {
+      var li = el("li", f.ok ? "" : "bad", f.name + " — " + (f.ok ? f.count + " items" : "unavailable"));
+      $("srclist").appendChild(li);
+    });
+
+    ["q"].forEach(function (id) { $(id).addEventListener("input", reset); });
+    ["sort", "range", "source", "hideRead"].forEach(function (id) { $(id).addEventListener("change", reset); });
+    $("more").onclick = function () { state.shown += PAGE; render(); };
+    render();
+  }
+
+  fetch("articles.json", { cache: "no-cache" })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(init)
+    .catch(function () {
+      $("updated").textContent = "Couldn't load articles.json";
+      $("grid").appendChild(el("div", "empty ui", "Run fetch_feeds.py first, and open this page through a web server (e.g. python -m http.server) or GitHub Pages — not by double-clicking the file."));
+    });
+})();
+</script>
+</body>
+</html>
